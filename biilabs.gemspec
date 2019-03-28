@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "biilabs/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "biilabs"
+  spec.name          = "biilabs-client"
   spec.version       = Biilabs::VERSION
   spec.authors       = ["gsx"]
   spec.email         = ["gsx@kdanmobile.com"]
