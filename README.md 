@@ -1,0 +1,33 @@
+# BiiLabs-Client
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'biilabs-client'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install biilabs-client
+
+## Usage
+
+Config biilabs host on initialize :
+
+```ruby
+  Biilabs.configuration do |config|
+    config.host = '[HOST_URL]'
+  end
+```
+
+and require it
+
+```ruby
+  require 'biilabs'
+```
