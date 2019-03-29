@@ -48,10 +48,10 @@ get your datas by tag
   tag_result = client.get_by_tag(tag)
 ```
 
-see detail sample on sample/sample.rb
+see detail sample on `sample/sample.rb`
 
 
 ### Trytes
 
 all data store in Tangle must be trytes format
-see biilabs/defautl_trytes_encoder.rb for more detail.
+see `biilabs/defautl_trytes_encoder.rb` for more detail.
