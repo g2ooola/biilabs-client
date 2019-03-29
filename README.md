@@ -32,21 +32,70 @@ and require it
   require 'biilabs'
 ```
 
-save data on Biilabs
+#### save data on Biilabs
+
 ```ruby
   client = Biilabs::Client.new
-  post_result = client.save(tag: tag, message: data)
+  post_result = client.save(tag: 'tag', message: 'data')
 ```
 
-get your data from Biilbas (need node id from post response)
+response of `save`
+
+```ruby
+  {
+    status: 200,
+    info: {
+      message: "data",
+      tag: "tag",
+      node_id: "C9FTQD...HRZ9999",
+      created_at: 1553829374238
+    }
+  }
+```
+
+#### get your data from Biilbas (need node id from post response)
+
 ```ruby
   get_result = client.get(post_result[:info][:node_id])
 ```
 
-get your datas by tag
+response of `get` is same with `save`
+
+#### get your datas by tag
+
 ```ruby
   tag_result = client.get_by_tag(tag)
 ```
+
+response of tag
+
+```ruby
+  {
+    status: 200,
+    info: [
+      {
+        message: "m2",
+        tag: "tt",
+        node_id: "VCMPD...GXMT99999",
+        created_at: 1553843097040
+      },
+      {
+        message: "m0",
+        tag: "tt1553843093",
+        node_id: "THLE..AZ9999",
+        created_at: 1553843095202
+      },
+      {
+        message: "m1",
+        tag: "tt1553843093",
+        node_id: "PM...IA9999",
+        created_at: 1553843096080
+      }
+    ]
+  }
+```
+
+#### sample
 
 see detail sample on `sample/sample.rb`
 
