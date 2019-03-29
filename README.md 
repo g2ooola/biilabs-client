@@ -32,6 +32,25 @@ and require it
   require 'biilabs'
 ```
 
+save data on Biilabs
+```ruby
+  client = Biilabs::Client.new
+  post_result = client.save(tag: tag, message: data)
+```
+
+get your data from Biilbas (need node id from post response)
+```ruby
+  get_result = client.get(post_result[:info][:node_id])
+```
+
+get your datas by tag
+```ruby
+  tag_result = client.get_by_tag(tag)
+```
+
+see detail sample on sample/sample.rb
+
+
 ### Trytes
 
 all data store in Tangle must be trytes format
