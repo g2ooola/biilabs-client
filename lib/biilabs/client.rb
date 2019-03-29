@@ -27,7 +27,7 @@ module Biilabs
       # max length of message is 2187 ?
 
       data     = biilabs_put_format(tag: tag, message: message)
-      response = http_put_tangle(data)
+      response = http_post_tangle(data)
       raw_data = JSON.parse(response.body)
       info     = node_summary(raw_data)
 
@@ -101,7 +101,7 @@ module Biilabs
         message:    tryter.from_trytes(result[KEY_MESSAGE]),
         tag:        tryter.from_trytes(result[KEY_TAG]),
         node_id:    result[KEY_NODE_ID],
-        created_at: result[KEY_NODE_ID]
+        created_at: result[KEY_CREATED_AT]
       }
     end
 
@@ -111,7 +111,7 @@ module Biilabs
       end
     end
 
-    def http_put_tangle(trytes_data)
+    def http_post_tangle(trytes_data)
       connection.post do |req|
         req.url SAVE_PATH
         req.headers['Content-Type'] = 'application/json'

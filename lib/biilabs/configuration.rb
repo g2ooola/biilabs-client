@@ -11,7 +11,7 @@ module Biilabs
     @config ||= Configuration.new
   end
 
-  def self.reset
+  def self.reset_config
     @config = Configuration.new
   end
 
