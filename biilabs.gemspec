@@ -17,7 +17,8 @@ Gem::Specification.new do |spec|
     'lib/biilabs/default_tryter.rb',
     'lib/biilabs/version.rb',
     'lib/biilabs/configuration.rb',
-    'lib/biilabs/base.rb'
+    'lib/biilabs/base.rb',
+    'lib/biilabs/error.rb'
   ]
   spec.require_paths = %w(lib)
 end

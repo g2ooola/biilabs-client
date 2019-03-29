@@ -3,8 +3,8 @@ require 'biilabs/client'
 require 'biilabs/default_tryter'
 require 'biilabs/configuration'
 require 'biilabs/base'
+require 'biilabs/error'
 
 module Biilabs
-  class Error < StandardError; end
   # Your code goes here...
 end

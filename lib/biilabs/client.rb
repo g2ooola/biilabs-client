@@ -1,8 +1,9 @@
 require 'faraday'
 require 'json'
-require 'biilabs/default_tryter.rb'
-require 'biilabs/configuration.rb'
-require 'biilabs/base.rb'
+require 'biilabs/default_tryter'
+require 'biilabs/configuration'
+require 'biilabs/base'
+require 'biilabs/error'
 
 # TODO : need more info about response status
 module Biilabs
@@ -12,6 +13,9 @@ module Biilabs
     SAVE_PATH = '/transaction'
     GET_BY_ID_PATH = '/transaction'
     GET_BY_TAG_PATH = '/tag'
+
+    TRYTES_TAG_MAX_LENGTH = 27
+    TRYTES_MESSAGE_MAX_LENGTH = 2187
 
     def initialize(option={})
       @show_raw_data = false
@@ -26,10 +30,10 @@ module Biilabs
       # TODO : check max length of tag & message (27 trytes)
       # max length of message is 2187 ?
 
-      data     = biilabs_put_format(tag: tag, message: message)
-      response = http_post_tangle(data)
-      raw_data = JSON.parse(response.body)
-      info     = node_summary(raw_data)
+      trytes_data = biilabs_post_format(tag: tag, message: message)
+      response    = http_post_tangle(trytes_data)
+      raw_data    = JSON.parse(response.body)
+      info        = node_summary(raw_data)
 
       return_result(
         response: response,
@@ -51,7 +55,7 @@ module Biilabs
     end
 
     def get_by_tag(tag)
-      tryte_tag = tryter.to_trytes(tag)
+      tryte_tag = tag_to_trytes(tag)
       response  = http_tag_get_tangle(tryte_tag)
       raw_data  = JSON.parse(response.body)
       info      = nodes_summary(raw_data)
@@ -86,12 +90,45 @@ module Biilabs
       result
     end
 
-    def biilabs_put_format(tag: ,message:)
-      trytes_tag     = tryter.to_trytes(tag)
-      trytes_message = tryter.to_trytes(message)
-      { tag: trytes_tag, message: trytes_message }.to_json
+    # ====== helper for send request ======
+    def tag_to_trytes(tag)
+      trytes_tag = tryter.to_trytes(tag)
+      if trytes_tag.length > TRYTES_TAG_MAX_LENGTH
+        raise Error.new("
+          Tag is too long after trytes-encode :
+          #{tag} -> #{trytes_tag}
+          longth of [tag] : #{tag.length}
+          longth of [tag after trytes] : #{trytes_tag.length}
+          max-longth of [tag after trytes] : #{TRYTES_TAG_MAX_LENGTH}
+          you can change trytes-encoder or use a shorter tag.
+        ")
+      end
+      trytes_tag
     end
 
+    def message_to_trytes(message)
+      trytes_message = tryter.to_trytes(message)
+      if trytes_message.length > TRYTES_MESSAGE_MAX_LENGTH
+        raise Error.new("
+          Message is too long after trytes-encode :
+          original message : #{message}
+          longth of [message]                  : #{message.length}
+          longth of [message after trytes]     : #{trytes_message.length}
+          max-longth of [message after trytes] : #{TRYTES_MESSAGE_MAX_LENGTH}
+          you can change trytes-encoder or use a shorter message.
+        ")
+      end
+      trytes_message
+    end
+
+    def biilabs_post_format(tag: ,message:)
+      {
+        tag: tag_to_trytes(tag),
+        message: message_to_trytes(message)
+      }.to_json
+    end
+
+    # ====== helper for http response ======
     KEY_MESSAGE = 'signature_and_message_fragment'
     KEY_TAG     = 'tag'
     KEY_NODE_ID = 'hash'
@@ -111,6 +148,7 @@ module Biilabs
       end
     end
 
+    # ====== http request ======
     def http_post_tangle(trytes_data)
       connection.post do |req|
         req.url SAVE_PATH
