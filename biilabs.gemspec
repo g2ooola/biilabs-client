@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.files = [
     'lib/biilabs.rb',
     'lib/biilabs/client.rb',
-    'lib/biilabs/default_tryter.rb',
+    'lib/biilabs/default_trytes_encoder.rb',
     'lib/biilabs/version.rb',
     'lib/biilabs/configuration.rb',
     'lib/biilabs/base.rb',

@@ -1,6 +1,6 @@
 require 'faraday'
 require 'json'
-require 'biilabs/default_tryter'
+require 'biilabs/default_trytes_encoder'
 require 'biilabs/configuration'
 require 'biilabs/base'
 require 'biilabs/error'
@@ -69,8 +69,8 @@ module Biilabs
 
     private
 
-    def tryter
-      @tryter ||= DefaultTryter.new
+    def trytes_encoder
+      @trytes_encoder ||= DefaultTrytesEncoder.new
     end
 
     def connection
@@ -92,7 +92,7 @@ module Biilabs
 
     # ====== helper for send request ======
     def tag_to_trytes(tag)
-      trytes_tag = tryter.to_trytes(tag)
+      trytes_tag = trytes_encoder.to_trytes(tag)
       if trytes_tag.length > TRYTES_TAG_MAX_LENGTH
         raise Error.new("
           Tag is too long after trytes-encode :
@@ -107,7 +107,7 @@ module Biilabs
     end
 
     def message_to_trytes(message)
-      trytes_message = tryter.to_trytes(message)
+      trytes_message = trytes_encoder.to_trytes(message)
       if trytes_message.length > TRYTES_MESSAGE_MAX_LENGTH
         raise Error.new("
           Message is too long after trytes-encode :
@@ -135,8 +135,8 @@ module Biilabs
     KEY_CREATED_AT = 'attachment_timestamp'
     def node_summary(result)
       {
-        message:    tryter.from_trytes(result[KEY_MESSAGE]),
-        tag:        tryter.from_trytes(result[KEY_TAG]),
+        message:    trytes_encoder.from_trytes(result[KEY_MESSAGE]),
+        tag:        trytes_encoder.from_trytes(result[KEY_TAG]),
         node_id:    result[KEY_NODE_ID],
         created_at: result[KEY_CREATED_AT]
       }

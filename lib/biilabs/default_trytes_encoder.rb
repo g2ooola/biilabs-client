@@ -5,7 +5,7 @@
 # all input chars must be a "ASCII character"
 
 module Biilabs
-  class DefaultTryter
+  class DefaultTrytesEncoder
     TRYTE_VALUES = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     TRYTE_REGEX = /^[9A-Z]*$/
 
