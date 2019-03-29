@@ -1,6 +1,6 @@
 # BiiLabs-Client
 
-## Installation
+### Installation
 
 Add this line to your application's Gemfile:
 
@@ -16,7 +16,7 @@ Or install it yourself as:
 
     $ gem install biilabs-client
 
-## Usage
+### Usage
 
 Config biilabs host on initialize :
 
@@ -31,3 +31,8 @@ and require it
 ```ruby
   require 'biilabs'
 ```
+
+### Trytes
+
+all data store in Tangle must be trytes format
+see biilabs/defautl_trytes_encoder.rb for more detail.
